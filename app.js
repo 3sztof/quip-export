@@ -146,7 +146,6 @@ class App {
         }
 
         //Token verification
-        console.log(this.cliArguments['api-url']);
         const quipService = new QuipService(this.cliArguments.token, this.cliArguments['api-url']);
 
         quipService.setLogger(this.Logger);
