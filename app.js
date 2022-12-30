@@ -146,7 +146,9 @@ class App {
         }
 
         //Token verification
-        const quipService = new QuipService(this.cliArguments.token);
+        console.log(this.cliArguments['api-url']);
+        const quipService = new QuipService(this.cliArguments.token, this.cliArguments['api-url']);
+
         quipService.setLogger(this.Logger);
 
         if(!await quipService.checkUser()) {
@@ -161,14 +163,16 @@ class App {
             this.zip = new JSZip();
         }
 
-        this.quipProcessor = new QuipProcessor(this.cliArguments.token, this.fileSaver.bind(this), this.progressFunc.bind(this), this.phaseFunc.bind(this),
-            {
-                documentTemplate,
-                documentCSS: this.cliArguments['embedded-styles']? documentCSS : '',
-                embeddedImages: this.cliArguments['embedded-images'],
-                comments: this.cliArguments['comments'],
-                docx: this.cliArguments['docx']
-            });
+        let quipProcessorOptions = {
+            documentTemplate,
+            documentCSS: this.cliArguments['embedded-styles']? documentCSS : '',
+            embeddedImages: this.cliArguments['embedded-images'],
+            comments: this.cliArguments['comments'],
+            docx: this.cliArguments['docx'],
+            quipApiURL: this.cliArguments['api-url']
+        };
+
+        this.quipProcessor = new QuipProcessor(this.cliArguments.token, this.fileSaver.bind(this), this.progressFunc.bind(this), this.phaseFunc.bind(this), quipProcessorOptions);
 
         this.quipProcessor.setLogger(this.Logger);
 
